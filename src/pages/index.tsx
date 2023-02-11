@@ -23,23 +23,25 @@ export default function Home() {
       location: { value: string }
     }
 
-    const location = target.location.value
-    if (location) {
-      const response = await fetch(`/api/weather?location=${location}`)
+    const loc = target.location.value
+    if (loc) {
+      const response = await fetch(`/api/weather?location=${loc}`)
       const data = await response.json()
-      setLocation(location)
+      setLocation(loc)
       setWeatherData(data)
     }
   }, [])
 
   const handleClick = useCallback((date: string) => () => {
     const dates = [...selectedDates]
+
     const index = dates.indexOf(date)
     if (index === -1) {
       dates.push(date)
     } else {
       dates.splice(index, 1)
     }
+
     localStorage.setItem(`${location}-selectedDates`, dates.join(','))
     setSelectedDates(dates)
   }, [location, selectedDates])
