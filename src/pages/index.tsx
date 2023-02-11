@@ -1,15 +1,11 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import React, { useCallback, useEffect, useState } from 'react'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 
-import styles from '@/styles/Home.module.css'
+import WeatherCard, { IWeather } from '@/components/WeatherCard'
 
-interface IWeather {
-  date: string
-  day: any
-}
+import styles from '@/styles/Home.module.css'
 
 export default function Home() {
   const [location, setLocation] = useState<string>()
@@ -73,32 +69,12 @@ export default function Home() {
 
         <div className={styles.container}>
           {weatherData.map((weather: IWeather) => (
-            <div
+            <WeatherCard
               key={weather.date}
-              className={`${styles.card} ${selectedDates.indexOf(weather.date) > -1 ? styles.selected : ''}`}
-              onClick={handleClick(weather.date)}
-            >
-              <p>{weather.date}</p>
-
-              <div className={styles.flexRow}>
-                <Image
-                  src={`https:${weather.day.condition.icon}`}
-                  width={64}
-                  height={64}
-                  alt="weather"
-                />
-                <h2>{weather.day.avgtemp_c}°C</h2>
-              </div>
-
-              <div className={styles.flexRow}>
-                <span>Humidity: {weather.day.avghumidity}%</span>
-                <span>Precipitation: {weather.day.totalprecip_mm}mm</span>
-              </div>
-              <div className={styles.flexRow}>
-                <span>Wind: {(weather.day.maxwind_kph * 1000 / 3600).toFixed(2)}m/s</span>
-                <span>Visibility: {weather.day.avgvis_km}km</span>
-              </div>
-            </div>
+              isSelected={selectedDates.indexOf(weather.date) > -1}
+              weather={weather}
+              handleClick={handleClick}
+            />
           ))}
         </div>
       </main>
